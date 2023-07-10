@@ -1,6 +1,6 @@
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:pet_adoption_app/views/home/home_screen.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pet_adoption_app/data/repositories/secure_storage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -13,16 +13,22 @@ class PetAdoptionApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Pet Adoption App',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<ThemeBloc>(
+          create: (BuildContext context) =>
+              ThemeBloc(SecureStorageService.instance)
+                ..add(InitialThemeSetEvent()),
+        ),
+      ],
+      child: BlocBuilder<ThemeBloc, ThemeData>(
+        builder: (context, themeData) => MaterialApp(
+          title: 'Paw Patrol',
+          theme: themeData,
+          debugShowCheckedModeBanner: false,
+          home: const HomeScreen(),
+        ),
       ),
-      initialRoute: '/',
-      routes: {
-        '/': (context) => const HomeScreen(),
-      },
     );
   }
 }
