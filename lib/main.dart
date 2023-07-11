@@ -1,6 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pet_adoption_app/data/repositories/pet_repository.dart';
 import 'package:pet_adoption_app/data/repositories/secure_storage.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'bloc/get_paginated_pets/get_paginated_pets_bloc.dart';
+import 'bloc/theme/theme_bloc.dart';
+import 'views/screens/home/home_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +24,12 @@ class PetAdoptionApp extends StatelessWidget {
         BlocProvider<ThemeBloc>(
           create: (BuildContext context) =>
               ThemeBloc(SecureStorageService.instance)
-                ..add(InitialThemeSetEvent()),
+                ..add(CurrentThemeSetEvent()),
+        ),
+        BlocProvider<GetPaginatedPetListBloc>(
+          create: (BuildContext context) => GetPaginatedPetListBloc(
+              PetRepositoryImpl(FirebaseFirestore.instance))
+            ..add(GetPaginatedPetListInitialEvent()),
         ),
       ],
       child: BlocBuilder<ThemeBloc, ThemeData>(

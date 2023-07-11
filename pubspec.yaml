@@ -35,8 +35,8 @@ dependencies:
   cloud_firestore:
   firebase_core: 
   firebase_auth:
-  dartz:
   flutter_secure_storage:
+  cached_network_image: ^3.2.3
   
 
 

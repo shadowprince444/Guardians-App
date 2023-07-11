@@ -1,5 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:pet_adoption_app/domain/repositories_interfaces/secure_storage.dart';
+import 'package:pet_adoption_app/domain/repository_interfaces/secure_storage.dart';
 
 class SecureStorageService extends ISecureStorageRepository {
   final _storage = const FlutterSecureStorage();
