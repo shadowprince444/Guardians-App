@@ -27,7 +27,7 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
   @override
   void initState() {
     _confettiController =
-        ConfettiController(duration: const Duration(seconds: 4));
+        ConfettiController(duration: const Duration(seconds: 2));
     super.initState();
   }
 
@@ -66,12 +66,6 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
             shape: BoxShape.rectangle,
             color: colorScheme.surface,
             borderRadius: BorderRadius.circular(padding),
-            boxShadow: [
-              BoxShadow(
-                  color: colorScheme.primary.withOpacity(0.5),
-                  offset: const Offset(0, 10),
-                  blurRadius: 10),
-            ],
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -123,23 +117,24 @@ class _CustomDialogBoxState extends State<CustomDialogBox> {
           child: CircleAvatar(
               backgroundColor: colorScheme.surface,
               radius: avatarRadius,
-              child: const Icon(Icons.pets)),
+              child: Icon(
+                Icons.pets,
+                size: 56.vdp(),
+              )),
         ),
         Positioned.fill(
           child: Align(
             alignment: Alignment.topCenter,
             child: ConfettiWidget(
               confettiController: _confettiController,
-              blastDirectionality: BlastDirectionality.explosive,
+              blastDirectionality: BlastDirectionality.directional,
               numberOfParticles: 40,
               maxBlastForce: 40,
               shouldLoop: false,
               colors: const [
+                Colors.purple,
                 Colors.green,
                 Colors.blue,
-                Colors.pink,
-                Colors.orange,
-                Colors.purple
               ],
             ),
           ),

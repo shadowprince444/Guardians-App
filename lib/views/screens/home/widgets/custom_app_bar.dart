@@ -59,7 +59,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                           ),
                           const HSpace(4),
                           Text(
-                            "Gaurdians",
+                            "Guardians",
                             style: theme.textTheme.headlineLarge!
                                 .copyWith(fontWeight: FontWeight.w500),
                           ),
