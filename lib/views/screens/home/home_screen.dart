@@ -30,6 +30,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     SizeConfig().init(context);
     return Scaffold(
       appBar: CustomAppBar(
@@ -41,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
           height: size.height,
           width: size.width,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               PetCategoriesWidget(
                 searchTextController: _searchTextController,
@@ -57,11 +59,28 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                     if (state is GetPaginatedPetListLoaded) {
                       final petList = state.modelList;
-                      return PetListingWidget(
-                          scrollController: _scrollController,
-                          petList: petList);
+                      return petList.isEmpty
+                          ? Center(
+                              child: Text(
+                                "No pets found",
+                                style: theme.textTheme.titleLarge!.copyWith(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            )
+                          : PetListingWidget(
+                              scrollController: _scrollController,
+                              petList: petList);
                     }
-                    return const SizedBox();
+                    return Center(
+                      child: Text(
+                        "No pets found",
+                        style: theme.textTheme.titleSmall!.copyWith(
+                          color: Colors.white,
+                        ),
+                      ),
+                    );
                   }))
             ],
           ),

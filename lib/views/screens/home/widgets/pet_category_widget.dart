@@ -17,7 +17,7 @@ class PetCategoryWidget extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     final ColorScheme colorScheme = theme.colorScheme;
     final cardColor = isSelected ? colorScheme.primary : colorScheme.surface;
-    // final iconColor = isSelected ? colorScheme.surface : colorScheme.primary;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.center,

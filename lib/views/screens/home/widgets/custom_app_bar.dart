@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_adoption_app/utils/screen_utils/size_config.dart';
 import 'package:pet_adoption_app/utils/screen_utils/widgets/spacing_widgets.dart';
@@ -68,6 +69,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
             ),
             IconButton(
               onPressed: () => setState(() {
+                SystemChannels.textInput.invokeMethod('TextInput.hide');
+                widget.searchTextController.clear();
                 isSearchEnabled = !isSearchEnabled;
               }),
               icon: Icon(isSearchEnabled ? Icons.close : Icons.search),

@@ -4,8 +4,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_adoption_app/data/repositories/pet_repository.dart';
 import 'package:pet_adoption_app/data/repositories/secure_storage.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'bloc/adoption_history/adoption_history_bloc.dart';
 import 'bloc/get_paginated_pets/get_paginated_pets_bloc.dart';
+import 'bloc/pet_adoption/pet_adoption_bloc.dart';
 import 'bloc/theme/theme_bloc.dart';
+import 'data/repositories/adoption_history.dart';
 import 'views/screens/home/home_screen.dart';
 
 void main() async {
@@ -30,6 +33,16 @@ class PetAdoptionApp extends StatelessWidget {
           create: (BuildContext context) => GetPaginatedPetListBloc(
               PetRepositoryImpl(FirebaseFirestore.instance))
             ..add(GetPaginatedPetListInitialEvent()),
+        ),
+        BlocProvider<PetAdoptionBloc>(
+          create: (BuildContext context) =>
+              PetAdoptionBloc(PetRepositoryImpl(FirebaseFirestore.instance))
+                ..add(GetAdoptionListEvent()),
+        ),
+        BlocProvider<AdoptionHistoryBloc>(
+          create: (BuildContext context) => AdoptionHistoryBloc(
+              AdoptionHistoryRepository(FirebaseFirestore.instance))
+            ..add(const AdoptionHistoryInitialEvent(0)),
         ),
       ],
       child: BlocBuilder<ThemeBloc, ThemeData>(

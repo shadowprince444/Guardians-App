@@ -9,7 +9,7 @@ class PetModel extends Equatable {
     required this.age,
     required this.price,
     required this.character,
-    required this.species,
+    required this.type,
     required this.imageURL,
     this.isAdopted = false,
     required this.sex,
@@ -21,25 +21,15 @@ class PetModel extends Equatable {
   final int age;
   final int price;
   final String character;
-  final String species;
+  final String type;
   final String imageURL;
   final bool isAdopted;
   final String sex;
   final String color;
 
   @override
-  List<Object?> get props => [
-        id,
-        name,
-        age,
-        price,
-        character,
-        species,
-        imageURL,
-        isAdopted,
-        sex,
-        color
-      ];
+  List<Object?> get props =>
+      [id, name, age, price, character, type, imageURL, isAdopted, sex, color];
 
   PetModel copyWith({
     String? id,
@@ -47,7 +37,7 @@ class PetModel extends Equatable {
     int? age,
     int? price,
     String? character,
-    String? species,
+    String? type,
     String? imageURL,
     bool? isAdopted,
     String? sex,
@@ -59,7 +49,7 @@ class PetModel extends Equatable {
       age: age ?? this.age,
       price: price ?? this.price,
       character: character ?? this.character,
-      species: species ?? this.species,
+      type: type ?? this.type,
       imageURL: imageURL ?? this.imageURL,
       isAdopted: isAdopted ?? this.isAdopted,
       sex: sex ?? this.sex,
@@ -74,7 +64,7 @@ class PetModel extends Equatable {
       age: map['age']?.toInt() ?? 0,
       price: map['price']?.toInt() ?? 0,
       character: map['character'] ?? '',
-      species: map['species'] ?? '',
+      type: map['species'] ?? '',
       imageURL: map['imageURL'] ?? '',
       isAdopted: map['isAdopted'] ?? false,
       sex: map['sex'] ?? '',

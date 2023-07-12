@@ -13,52 +13,49 @@ class PetCategoriesWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Categories",
-            style: theme.textTheme.bodyLarge!
-                .copyWith(fontWeight: FontWeight.w500),
-          ),
-          BlocBuilder<GetPaginatedPetListBloc, GetPaginatedPetListState>(
-              builder: (context, state) {
-            return SizedBox(
-              height: 50.vdp(),
-              child: ListView.builder(
-                itemCount: PetCategory.values.length,
-                scrollDirection: Axis.horizontal,
-                shrinkWrap: true,
-                padding: EdgeInsets.zero,
-                itemBuilder: (context, index) {
-                  var item = PetCategory.values[index];
-                  return Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.hdp()),
-                    child: GestureDetector(
-                      onTap: () {
-                        searchTextController.clear();
-                        BlocProvider.of<GetPaginatedPetListBloc>(context)
-                            .add(GetPaginatedPetListCategoryEvent(item));
-                      },
-                      child: PetCategoryWidget(
-                        title: item.name,
-                        count: BlocProvider.of<GetPaginatedPetListBloc>(context)
-                            .getCountByCategory(item),
-                        isSelected:
-                            BlocProvider.of<GetPaginatedPetListBloc>(context)
-                                .isCurrentlySelected(item),
-                      ),
+    return Column(
+      mainAxisSize: MainAxisSize.max,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Categories",
+          style:
+              theme.textTheme.bodyLarge!.copyWith(fontWeight: FontWeight.w500),
+        ),
+        BlocBuilder<GetPaginatedPetListBloc, GetPaginatedPetListState>(
+            builder: (context, state) {
+          return SizedBox(
+            height: 50.vdp(),
+            child: ListView.builder(
+              itemCount: PetCategory.values.length,
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              padding: EdgeInsets.zero,
+              itemBuilder: (context, index) {
+                var item = PetCategory.values[index];
+                return Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 8.hdp()),
+                  child: GestureDetector(
+                    onTap: () {
+                      searchTextController.clear();
+                      BlocProvider.of<GetPaginatedPetListBloc>(context)
+                          .add(GetPaginatedPetListCategoryEvent(item));
+                    },
+                    child: PetCategoryWidget(
+                      title: item.name,
+                      count: BlocProvider.of<GetPaginatedPetListBloc>(context)
+                          .getCountByCategory(item),
+                      isSelected:
+                          BlocProvider.of<GetPaginatedPetListBloc>(context)
+                              .isCurrentlySelected(item),
                     ),
-                  );
-                },
-              ),
-            );
-          }),
-        ],
-      ),
+                  ),
+                );
+              },
+            ),
+          );
+        }),
+      ],
     );
   }
 }

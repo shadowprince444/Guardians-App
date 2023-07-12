@@ -10,6 +10,7 @@ enum PetCategory {
   all,
   dog,
   cat,
+  rabit,
 }
 
 enum DeviceScreenType {

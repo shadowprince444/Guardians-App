@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_adoption_app/utils/screen_utils/size_config.dart';
 import 'package:pet_adoption_app/utils/screen_utils/widgets/spacing_widgets.dart';
 
+import '../../../../bloc/pet_adoption/pet_adoption_bloc.dart';
 import '../../../../data/models/pet_model.dart';
 
 class PetCardWidget extends StatelessWidget {
@@ -26,7 +28,9 @@ class PetCardWidget extends StatelessWidget {
         onCardTap?.call(petModel);
       },
       child: ColoredBox(
-        color: Colors.yellow,
+        color: colorScheme.primary.withOpacity(
+          .5,
+        ),
         child: ColorFiltered(
           colorFilter: ColorFilter.mode(
             isAdopted ? Colors.grey : Colors.transparent,
@@ -133,23 +137,37 @@ class PetCardWidget extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Container(
-                              margin: EdgeInsets.only(left: 8.hdp()),
-                              padding: EdgeInsets.all(16.vdp()),
-                              decoration: BoxDecoration(
-                                color: colorScheme.background,
-                                borderRadius: BorderRadius.circular(
-                                  16.vdp(),
-                                ),
-                              ),
-                              child: Text(
-                                "Adopted ;)",
-                                style: theme.textTheme.headlineLarge!
-                                    .copyWith(fontWeight: FontWeight.w500),
-                              ),
-                            ),
+                          BlocBuilder<PetAdoptionBloc, PetAdoptionState>(
+                            builder: (context, state) {
+                              if (state is PetAdoptionListLoadedState) {
+                                return Visibility(
+                                    visible: state.list
+                                        .where((element) =>
+                                            element.id == petModel.id)
+                                        .isNotEmpty,
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Container(
+                                        margin: EdgeInsets.only(left: 8.hdp()),
+                                        padding: EdgeInsets.all(16.vdp()),
+                                        decoration: BoxDecoration(
+                                          color: colorScheme.background,
+                                          borderRadius: BorderRadius.circular(
+                                            16.vdp(),
+                                          ),
+                                        ),
+                                        child: Text(
+                                          "Adopted ;)",
+                                          style: theme.textTheme.headlineLarge!
+                                              .copyWith(
+                                                  fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ));
+                              } else {
+                                return const SizedBox();
+                              }
+                            },
                           )
                         ],
                       ),

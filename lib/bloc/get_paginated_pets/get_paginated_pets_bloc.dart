@@ -15,6 +15,8 @@ class GetPaginatedPetListBloc
   final List<PetModel> _getPaginatedPetList = [];
   final List<PetModel> _currentGetPaginatedPetListByCategory = [];
   PetCategory currentSelected = PetCategory.all;
+  bool shouldFetchMore = true;
+  String? searchText;
 
   int currentPage = -1;
 
@@ -22,43 +24,61 @@ class GetPaginatedPetListBloc
       : super(GetPaginatedPetListInitialState()) {
     on<GetPaginatedPetListInitialEvent>((event, emit) async {
       currentSelected = PetCategory.all;
-      emit(GetPaginatedPetListLoading(_getPaginatedPetList));
+      searchText = "";
       add(const GetPaginatedPetListNextPageEvent(-1));
     });
 
     on<GetPaginatedPetListCategoryEvent>((event, emit) async {
       PetCategory petCategory = event.petCategory;
-      currentSelected = petCategory;
-      currentPage = -1;
-      add(const GetPaginatedPetListNextPageEvent(-1));
-      // final list = _getListByCategory(currentSelected);
-      // _setCurrentList(list);
-      // _emitLoadedState(emit, list);
+      if (petCategory != currentSelected) {
+        currentSelected = petCategory;
+        currentPage = -1;
+        searchText = "";
+        add(GetPaginatedPetListNextPageEvent(currentPage));
+      }
     });
 
     on<GetPaginatedPetListSearchEvent>((event, emit) async {
+      emit(GetPaginatedPetListLoading(_getPaginatedPetList));
       String query = event.query;
-      final list = _currentGetPaginatedPetListByCategory.where((element) {
-        return element.name.toLowerCase().contains(query.toLowerCase());
-      }).toList();
+      searchText = query;
+      List<PetModel> list = filterSearchText(_getPaginatedPetList);
       _emitLoadedState(emit, list);
     });
 
     on<GetPaginatedPetListNextPageEvent>((event, emit) async {
-      emit(GetPaginatedPetListLoading(_getPaginatedPetList));
+      if (event.page == -1) {
+        _getPaginatedPetList.clear();
+        if (!shouldFetchMore) {
+          shouldFetchMore = true;
+          _currentGetPaginatedPetListByCategory.clear();
+        }
+      }
+      if (shouldFetchMore) {
+        emit(GetPaginatedPetListLoading(_getPaginatedPetList));
 
-      final result = await _petRepository.getNextPageListByCategory(
-          ++currentPage, capitalizeEnumValue(currentSelected.toString()));
+        final result = await _petRepository.getNextPageListByCategory(
+            ++currentPage, capitalizeEnumValue(currentSelected.toString()));
 
-      if (result.status == ApiResponseStatus.error || result.data == null) {
-        _emitLoadedState(emit, _getListByCategory(currentSelected));
-      } else {
-        final list = result.data!;
-        _getPaginatedPetList.addAll(list);
-        _setCurrentList(_getListByCategory(currentSelected));
-        _emitLoadedState(emit, _getListByCategory(currentSelected));
+        if (result.status == ApiResponseStatus.error || result.data == null) {
+          _emitLoadedState(
+              emit, filterSearchText(_getListByCategory(currentSelected)));
+        } else {
+          final list = result.data!;
+          _getPaginatedPetList.addAll(list);
+          _setCurrentList(_getListByCategory(currentSelected));
+          _emitLoadedState(emit, _getListByCategory(currentSelected));
+        }
       }
     });
+  }
+
+  List<PetModel> filterSearchText(List<PetModel> list) {
+    return list.where((element) {
+      return element.name
+          .toLowerCase()
+          .contains(searchText?.toLowerCase() ?? "");
+    }).toList();
   }
 
   int getCountByCategory(PetCategory category) {
@@ -66,7 +86,7 @@ class GetPaginatedPetListBloc
       return _getPaginatedPetList.length;
     } else {
       return _getPaginatedPetList.where((element) {
-        return element.species.toLowerCase() == category.name.toLowerCase();
+        return element.type.toLowerCase() == category.name.toLowerCase();
       }).length;
     }
   }
@@ -92,7 +112,7 @@ class GetPaginatedPetListBloc
     } else {
       list = _getPaginatedPetList
           .where((element) =>
-              element.species.toLowerCase() == petCategory.name.toLowerCase())
+              element.type.toLowerCase() == petCategory.name.toLowerCase())
           .toList();
     }
     return list;

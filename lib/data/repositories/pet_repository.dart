@@ -58,8 +58,9 @@ class PetRepositoryImpl implements IPetRepository {
           .collection('pets')
           .where('isAdopted', isEqualTo: true)
           .get();
-      final pets =
-          snapshot.docs.map((doc) => PetModel.fromMap(doc.data())).toList();
+      final pets = snapshot.docs
+          .map((doc) => PetModel.fromMap(convertFirestoreQueryDocToJson(doc)))
+          .toList();
       return ApiResponse.completed(pets);
     } catch (e) {
       return ApiResponse.error(e.toString());
@@ -70,7 +71,20 @@ class PetRepositoryImpl implements IPetRepository {
   Future<String> adoptPet(PetModel petModel) async {
     try {
       final petRef = _firestore.collection('pets').doc(petModel.id);
+      final adoptionData = {
+        'name': petModel.name,
+        'age': petModel.age,
+        'sex': petModel.sex,
+        'imageUrl': petModel.imageURL,
+        'adoptedTime': Timestamp.now(),
+      };
+
+      // Update the 'isAdopted' field in the pet document
       await petRef.update({'isAdopted': true});
+
+      // Add the adoption data to the history collection
+      await _firestore.collection('adoptionHistory').add(adoptionData);
+
       return petModel.id;
     } catch (e) {
       throw Exception('Failed to adopt pet: $e');

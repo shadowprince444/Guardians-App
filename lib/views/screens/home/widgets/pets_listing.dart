@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pet_adoption_app/utils/screen_utils/size_config.dart';
 import 'package:pet_adoption_app/views/screens/home/widgets/pet_card_widget.dart';
 
+import '../../../../bloc/pet_adoption/pet_adoption_bloc.dart';
 import '../../../../data/models/pet_model.dart';
 import '../../../../utils/screen_utils/widgets/spacing_widgets.dart';
+import '../../pet_details/detailed_view_screen.dart';
 
 class PetListingWidget extends StatelessWidget {
   const PetListingWidget({
@@ -33,7 +37,7 @@ class PetListingWidget extends StatelessWidget {
             child: CircularProgressIndicator(),
           );
         }
-        final petModel = petList[index];
+        var petModel = petList[index];
         return ClipRRect(
           borderRadius: BorderRadius.circular(
             40.vdp(),
@@ -42,12 +46,22 @@ class PetListingWidget extends StatelessWidget {
             key: Key(petModel.id),
             petModel: petModel,
             onCardTap: (model) {
-              //Navigate to detailed page
+              final isAdopted =
+                  context.read<PetAdoptionBloc>().isAdopted(petModel);
+              model = model.copyWith(isAdopted: isAdopted);
+              _navigateToDetailsScreen(context, model);
             },
-            isAdopted: false,
+            isAdopted: context.read<PetAdoptionBloc>().isAdopted(petModel),
           ),
         );
       },
     );
+  }
+
+  void _navigateToDetailsScreen(BuildContext context, PetModel petModel) {
+    SystemChannels.textInput.invokeMethod('TextInput.hide');
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (context) => DetailsScreen(petModel: petModel),
+    ));
   }
 }
