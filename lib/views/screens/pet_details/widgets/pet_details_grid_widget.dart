@@ -28,7 +28,7 @@ class PetDetailsGridWidget extends StatelessWidget {
           var itemKey = itemList.keys.toList()[index];
           return Container(
             decoration: BoxDecoration(
-              color: colorScheme.secondary,
+              color: colorScheme.primary.withOpacity(.5),
               borderRadius: BorderRadius.circular(
                 16.vdp(),
               ),

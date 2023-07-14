@@ -43,7 +43,7 @@ class AdoptedPetWidget extends StatelessWidget {
                 child: Align(
                   alignment: Alignment.bottomCenter,
                   child: Container(
-                    height: 120.vdp(),
+                    height: 130.vdp(),
                     padding: EdgeInsets.symmetric(
                       horizontal: 16.hdp(),
                       vertical: 8.vdp(),
