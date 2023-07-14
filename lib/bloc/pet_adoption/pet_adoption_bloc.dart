@@ -23,17 +23,6 @@ class PetAdoptionBloc extends Bloc<PetAdoptionEvent, PetAdoptionState> {
       add(GetAdoptionListEvent());
     });
 
-    on<CheckAdoptionEvent>((event, emit) async {
-      emit(PetAdoptionLoadingState());
-      final petId = event.petId;
-      final result = await _petRepository.getPetById(petId);
-      if (result.status == ApiResponseStatus.error || result.data == null) {
-        emit(PetAdoptionErrorState());
-      } else {
-        emit(PetAlreadyAdoptedState(result.data!));
-      }
-    });
-
     on<GetAdoptionListEvent>((event, emit) async {
       emit(PetAdoptionLoadingState());
       final result = await _petRepository.getAllAdoptedPets();

@@ -9,7 +9,7 @@ abstract class IPetRepository {
 
   Future<ApiResponse<List<PetModel>>> getAllAdoptedPets();
 
-  Future<String> adoptPet(PetModel petModel);
+  Future<ApiResponse<String>> adoptPet(PetModel petModel);
 
   Future<ApiResponse<PetModel>> getPetById(int petId);
 }

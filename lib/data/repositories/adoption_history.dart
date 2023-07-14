@@ -24,7 +24,7 @@ class AdoptionHistoryRepository implements IAdoptionHistoryRepository {
   AdoptionHistoryRepository._internal();
 
   @override
-  Future<ApiResponse<List<AdoptionHistory>>> getAdoptionHistory(
+  Future<ApiResponse<List<AdoptionHistoryModel>>> getAdoptionHistory(
     int pageNumber,
   ) async {
     try {
@@ -41,10 +41,10 @@ class AdoptionHistoryRepository implements IAdoptionHistoryRepository {
               .startAfterDocument(lastDocumentSnapshot!)
               .get();
 
-      List<AdoptionHistory> historyList = [];
+      List<AdoptionHistoryModel> historyList = [];
       if (snapshot.docs.isNotEmpty) {
         historyList = snapshot.docs
-            .map((doc) => AdoptionHistory.fromSnapshot(doc.data(), doc.id))
+            .map((doc) => AdoptionHistoryModel.fromSnapshot(doc.data(), doc.id))
             .toList();
         lastDocumentSnapshot = snapshot.docs.last;
       }

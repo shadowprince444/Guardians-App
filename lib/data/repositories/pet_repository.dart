@@ -68,7 +68,7 @@ class PetRepositoryImpl implements IPetRepository {
   }
 
   @override
-  Future<String> adoptPet(PetModel petModel) async {
+  Future<ApiResponse<String>> adoptPet(PetModel petModel) async {
     try {
       final petRef = _firestore.collection('pets').doc(petModel.id);
       final adoptionData = {
@@ -85,9 +85,9 @@ class PetRepositoryImpl implements IPetRepository {
       // Add the adoption data to the history collection
       await _firestore.collection('adoptionHistory').add(adoptionData);
 
-      return petModel.id;
+      return ApiResponse.completed(petModel.id);
     } catch (e) {
-      throw Exception('Failed to adopt pet: $e');
+      return ApiResponse.error(e.toString());
     }
   }
 

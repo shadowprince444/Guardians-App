@@ -10,7 +10,7 @@ abstract class AdoptionHistoryState extends Equatable {
 class AdoptionHistoryInitialState extends AdoptionHistoryState {}
 
 class AdoptionHistoryLoading extends AdoptionHistoryState {
-  final List<AdoptionHistory> modelList;
+  final List<AdoptionHistoryModel> modelList;
 
   const AdoptionHistoryLoading(this.modelList);
 
@@ -19,7 +19,7 @@ class AdoptionHistoryLoading extends AdoptionHistoryState {
 }
 
 class AdoptionHistoryLoaded extends AdoptionHistoryState {
-  final List<AdoptionHistory> modelList;
+  final List<AdoptionHistoryModel> modelList;
 
   const AdoptionHistoryLoaded(this.modelList);
 

@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class AdoptionHistory {
+class AdoptionHistoryModel {
   final String id;
   final String name;
   final int age;
@@ -10,7 +10,7 @@ class AdoptionHistory {
   final String imageUrl;
   final DateTime adoptedTime;
 
-  AdoptionHistory({
+  AdoptionHistoryModel({
     required this.id,
     required this.name,
     required this.age,
@@ -19,8 +19,9 @@ class AdoptionHistory {
     required this.adoptedTime,
   });
 
-  factory AdoptionHistory.fromSnapshot(Map<String, dynamic> map, String id) {
-    return AdoptionHistory(
+  factory AdoptionHistoryModel.fromSnapshot(
+      Map<String, dynamic> map, String id) {
+    return AdoptionHistoryModel(
       id: id,
       name: map['name'] as String,
       age: map['age'] as int,
@@ -30,7 +31,7 @@ class AdoptionHistory {
     );
   }
 
-  AdoptionHistory copyWith({
+  AdoptionHistoryModel copyWith({
     String? id,
     String? name,
     int? age,
@@ -38,7 +39,7 @@ class AdoptionHistory {
     String? imageUrl,
     DateTime? adoptedTime,
   }) {
-    return AdoptionHistory(
+    return AdoptionHistoryModel(
       id: id ?? this.id,
       name: name ?? this.name,
       age: age ?? this.age,
@@ -59,8 +60,8 @@ class AdoptionHistory {
     };
   }
 
-  factory AdoptionHistory.fromMap(Map<String, dynamic> map) {
-    return AdoptionHistory(
+  factory AdoptionHistoryModel.fromMap(Map<String, dynamic> map) {
+    return AdoptionHistoryModel(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       age: map['age']?.toInt() ?? 0,
@@ -72,8 +73,8 @@ class AdoptionHistory {
 
   String toJson() => json.encode(toMap());
 
-  factory AdoptionHistory.fromJson(String source) =>
-      AdoptionHistory.fromMap(json.decode(source));
+  factory AdoptionHistoryModel.fromJson(String source) =>
+      AdoptionHistoryModel.fromMap(json.decode(source));
 
   @override
   String toString() {
@@ -84,7 +85,7 @@ class AdoptionHistory {
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is AdoptionHistory &&
+    return other is AdoptionHistoryModel &&
         other.id == id &&
         other.name == name &&
         other.age == age &&

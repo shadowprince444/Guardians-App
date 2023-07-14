@@ -12,7 +12,7 @@ class AdoptedPetWidget extends StatelessWidget {
     super.key,
   });
 
-  final AdoptionHistory petHistoryModel;
+  final AdoptionHistoryModel petHistoryModel;
 
   @override
   Widget build(BuildContext context) {

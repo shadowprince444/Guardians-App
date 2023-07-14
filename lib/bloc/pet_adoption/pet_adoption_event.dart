@@ -21,11 +21,3 @@ class GetAdoptionListEvent extends PetAdoptionEvent {
   @override
   List<Object?> get props => [];
 }
-
-class CheckAdoptionEvent extends PetAdoptionEvent {
-  final int petId;
-
-  CheckAdoptionEvent(this.petId);
-  @override
-  List<Object?> get props => [];
-}

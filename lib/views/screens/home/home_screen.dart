@@ -17,12 +17,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final ScrollController _scrollController = ScrollController();
+  final ScrollController scrollController = ScrollController();
   final TextEditingController _searchTextController = TextEditingController();
 
   @override
   void initState() {
-    _scrollController.addListener(() {
+    scrollController.addListener(() {
       pagination();
     });
     super.initState();
@@ -54,8 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     if (state is GetPaginatedPetListLoading) {
                       final petList = state.modelList;
                       return PetListingWidget(
-                          scrollController: _scrollController,
-                          petList: petList);
+                          scrollController: scrollController, petList: petList);
                     }
                     if (state is GetPaginatedPetListLoaded) {
                       final petList = state.modelList;
@@ -70,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             )
                           : PetListingWidget(
-                              scrollController: _scrollController,
+                              scrollController: scrollController,
                               petList: petList);
                     }
                     return Center(
@@ -90,8 +89,8 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void pagination() {
-    if (_scrollController.position.pixels ==
-        _scrollController.position.maxScrollExtent) {
+    if (scrollController.position.pixels ==
+        scrollController.position.maxScrollExtent) {
       final petListBloc = context.read<GetPaginatedPetListBloc>();
       petListBloc
           .add(GetPaginatedPetListNextPageEvent(petListBloc.currentPage));
