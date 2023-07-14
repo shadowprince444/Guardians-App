@@ -1,10 +1,8 @@
-import 'package:mockito/mockito.dart';
 import 'package:pet_adoption_app/data/models/adoption_history.dart';
 import 'package:pet_adoption_app/data/models/response_wrapper.dart';
 import 'package:pet_adoption_app/domain/repository_interfaces/adoption_history.dart';
 
-class MockAdoptionHistoryRepository extends Mock
-    implements IAdoptionHistoryRepository {
+class MockAdoptionHistoryRepository implements IAdoptionHistoryRepository {
   final List<AdoptionHistoryModel> adoptionHistoryList;
 
   MockAdoptionHistoryRepository(this.adoptionHistoryList);
